@@ -1,8 +1,8 @@
 package com.marmotta.anyx.graphql.schema.validator
 
-import com.marmotta.anyx.graphql.schema.models.Courier
-import com.marmotta.anyx.graphql.schema.models.Payment
-import com.marmotta.anyx.graphql.schema.models.PaymentMethod
+import com.marmotta.anyx.graphql.shared.model.Courier
+import com.marmotta.anyx.graphql.schema.models.PaymentRegistrationDTO
+import com.marmotta.anyx.graphql.shared.model.PaymentMethod
 import com.marmotta.anyx.graphql.schema.validator.rule.*
 
 object PaymentValidation {
@@ -17,7 +17,7 @@ object PaymentValidation {
         PaymentMethod.CHEQUE to BankNameAndChequeRequired
     )
 
-    fun of(payment: Payment): PaymentValidationDetails {
+    fun of(payment: PaymentRegistrationDTO): PaymentValidationDetails {
         val applicableRule = appliableRules[payment.paymentMethod]?: return PaymentValidationDetails.Valid
         //We'll use exhaustive when here instead of if-else construction
         //to prevent us from losing options, when response from 'applicableRule.check' is

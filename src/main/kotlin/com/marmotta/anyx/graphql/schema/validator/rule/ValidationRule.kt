@@ -1,9 +1,9 @@
 package com.marmotta.anyx.graphql.schema.validator.rule
 
-import com.marmotta.anyx.graphql.schema.models.Payment
+import com.marmotta.anyx.graphql.schema.models.PaymentRegistrationDTO
 
 fun interface ValidationRule {
-    fun check(payment: Payment): ValidationResult
+    fun check(payment: PaymentRegistrationDTO): ValidationResult
 }
 
 sealed interface ValidationResult {

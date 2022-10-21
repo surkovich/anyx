@@ -1,10 +1,10 @@
 package com.marmotta.anyx.graphql.schema.validator.rule
 
-import com.marmotta.anyx.graphql.schema.models.Courier
-import com.marmotta.anyx.graphql.schema.models.Payment
+import com.marmotta.anyx.graphql.shared.model.Courier
+import com.marmotta.anyx.graphql.schema.models.PaymentRegistrationDTO
 
 internal object LastFourDigitsOfCardRequired: ValidationRule {
-    override fun check(payment: Payment): ValidationResult {
+    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
         if (payment.additionalItem?.lastFourDigits == null)
             return ValidationResult.Errors(
                 errors = "Last four digits of credit card number required"
@@ -22,7 +22,7 @@ internal object LastFourDigitsOfCardRequired: ValidationRule {
 }
 
 internal class CourierServiceShouldBeRestricted(private val couriers: Set<Courier>): ValidationRule {
-    override fun check(payment: Payment): ValidationResult {
+    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
         val courierService = payment.additionalItem?.courierService
             ?: return ValidationResult.Errors(
                 errors = "Courier service is not provided. Available courier services are [$couriers]"
@@ -40,7 +40,7 @@ internal class CourierServiceShouldBeRestricted(private val couriers: Set<Courie
 }
 
 internal object BankNameAndAccountRequired: ValidationRule {
-    override fun check(payment: Payment): ValidationResult {
+    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
         val emptyRequirements: List<String> = listOfNotNull(
             if (payment.additionalItem?.bankName == null) {
                 "Bank Name"
@@ -62,7 +62,7 @@ internal object BankNameAndAccountRequired: ValidationRule {
 }
 
 object BankNameAndChequeRequired: ValidationRule {
-    override fun check(payment: Payment): ValidationResult {
+    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
         val emptyRequirements: List<String> = listOfNotNull(
             if (payment.additionalItem?.bankName == null) {
                 "Bank Name"

@@ -2,14 +2,22 @@ package com.marmotta.anyx.graphql.schema.models
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLName
+import com.marmotta.anyx.graphql.shared.model.Courier
+import com.marmotta.anyx.graphql.shared.model.PaymentMethod
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 
+/**
+ * DTO for new payment registration
+ * Used only for controller-level interaction,
+ * Shouldn't be ever transferred to any other levels
+ */
 @GraphQLDescription(
     "Payment details"
 )
-data class Payment(
+@GraphQLName("payment")
+data class PaymentRegistrationDTO(
     @GraphQLName("customer_id")
     val customerId: Long,
     val price: BigDecimal,
@@ -36,22 +44,3 @@ class AdditionalDetails(
     val chequeNumber: String?
 )
 
-enum class Courier {
-    YAMATO,
-    SAGAWA
-}
-
-enum class PaymentMethod {
-    CASH,
-    CASH_ON_DELIVERY,
-    VISA,
-    MASTERCARD,
-    AMEX,
-    JCB,
-    LINE_PAY,
-    PAYPAY,
-    POINTS,
-    GRAB_PAY,
-    BANK_TRANSFER,
-    CHEQUE
-}
