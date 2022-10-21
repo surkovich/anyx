@@ -38,5 +38,6 @@ sealed class MethodDependedDetails(
         data class Jcb(
             override val lastFourDigits: Int
         ): CardPayment(paymentMethod = PaymentMethod.JCB, lastFourDigits = lastFourDigits)
+
     }
 }
