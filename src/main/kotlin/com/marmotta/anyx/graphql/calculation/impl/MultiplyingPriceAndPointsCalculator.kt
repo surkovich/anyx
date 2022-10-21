@@ -7,11 +7,11 @@ import java.math.RoundingMode
 
 
 
-internal class MultiplyingPriceCalculator(
-    private val priceModifier: BigDecimal,
+internal class MultiplyingPriceAndPointsCalculator(
+
     private val pointsMultiplier: BigDecimal
 ): PriceAndPointsCalculator {
-    override fun calculate(initialPrice: BigDecimal) =
+    override fun calculate(initialPrice: BigDecimal, priceModifier: BigDecimal) =
         PriceAndPoints(
             finalPrice = initialPrice *  priceModifier,
             points = (initialPrice * pointsMultiplier).setScale(0, RoundingMode.FLOOR).intValueExact()

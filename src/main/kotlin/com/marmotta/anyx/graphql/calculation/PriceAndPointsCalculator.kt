@@ -3,7 +3,7 @@ package com.marmotta.anyx.graphql.calculation
 import java.math.BigDecimal
 
 fun interface PriceAndPointsCalculator {
-    fun calculate(initialPrice: BigDecimal): PriceAndPoints
+    fun calculate(initialPrice: BigDecimal, priceModifier: BigDecimal): PriceAndPoints
 }
 
 data class PriceAndPoints(
