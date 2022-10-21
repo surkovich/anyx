@@ -22,7 +22,7 @@ object PaymentValidation {
         //We'll use exhaustive when here instead of if-else construction
         //to prevent us from losing options, when response from 'applicableRule.check' is
         //unexpectedly extended by adding new possibilities.
-        //This is just illustration of such aproach and for validation looks a bit over-engineering
+        //This is just illustration of such approach and for validation looks a bit over-engineering
         return when(val result = applicableRule.check(payment)) {
             is ValidationResult.Valid -> PaymentValidationDetails.Valid
             is ValidationResult.Errors -> PaymentValidationDetails.Errors(
