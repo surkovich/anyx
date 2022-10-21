@@ -6,7 +6,7 @@ import com.marmotta.anyx.graphql.shared.model.PaymentMethod
 import com.marmotta.anyx.graphql.schema.validator.rule.*
 
 object PaymentValidation {
-
+//TODO add price modifier validation!!!
     private val appliableRules: Map<PaymentMethod, ValidationRule> = mapOf(
         PaymentMethod.CASH_ON_DELIVERY to CourierServiceShouldBeRestricted(setOf(Courier.SAGAWA, Courier.YAMATO)),
         PaymentMethod.VISA to LastFourDigitsOfCardRequired,
