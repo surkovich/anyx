@@ -8,6 +8,11 @@ object PriceAndPointsCalculation {
     private val calculators: Map<PaymentMethod, PriceAndPointsCalculator> =
         PaymentMethod.values().associateWith { it.suitableCalculator() }
 
+    //TODO rewrite if have time, 3 parameters is too much
+    //Shouldn't calculate final price here
+    fun of(price: BigDecimal, priceModifier: BigDecimal, paymentMethod: PaymentMethod): PriceAndPoints =
+        calculators[paymentMethod]!!.calculate(price, priceModifier)
+
     private fun PaymentMethod.suitableCalculator() : PriceAndPointsCalculator =
     // Maybe not the most elegant solution, but safe for new payment methods adding.
     // If we'll forget about adding new algorithm we will see it on the syntax level,
@@ -29,10 +34,4 @@ object PriceAndPointsCalculation {
         PaymentMethod.BANK_TRANSFER -> MultiplyingPriceAndPointsCalculator(BigDecimal.ZERO)
         PaymentMethod.CHEQUE -> MultiplyingPriceAndPointsCalculator(BigDecimal.ZERO)
     }
-
-    //TODO rewrite if have time, 3 parameters is too much
-    //Shouldn't calculate final price here
-    fun of(price: BigDecimal, priceModifier: BigDecimal, paymentMethod: PaymentMethod): PriceAndPoints =
-        calculators[paymentMethod]!!.calculate(price, priceModifier)
 }
-
