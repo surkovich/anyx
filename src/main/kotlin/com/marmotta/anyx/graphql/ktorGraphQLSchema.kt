@@ -6,10 +6,13 @@ import com.expediagroup.graphql.generator.hooks.SchemaGeneratorHooks
 import com.expediagroup.graphql.generator.scalars.IDValueUnboxer
 import com.expediagroup.graphql.generator.toSchema
 import com.expediagroup.graphql.server.operations.Query
+import com.marmotta.anyx.graphql.repository.persistence.NewPaymentPersistence
 import com.marmotta.anyx.graphql.schema.*
 import graphql.GraphQL
 import graphql.scalars.ExtendedScalars.*
 import graphql.schema.GraphQLType
+import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 import kotlin.reflect.KClass
@@ -22,7 +25,9 @@ import kotlin.reflect.KType
  * configuration files instead of hardcoding them.
  */
 private val config = SchemaGeneratorConfig(
-    supportedPackages = listOf("com.marmotta.anyx.graphql"),
+    supportedPackages = listOf(
+        "com.marmotta.anyx.graphql"
+    ),
     hooks = CustomSchemaGeneratorHooks()
 )
 
@@ -38,12 +43,14 @@ class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
 
 
 
-private val queries = listOf<TopLevelObject>(
+private val queries = listOf(
     TopLevelObject(HelloQueryService()),
 )
 
+private val persistence: NewPaymentPersistence by inject(NewPaymentPersistence::class.java)
+
 private val mutations = listOf(
-    TopLevelObject(PaymentReceiveController())
+    TopLevelObject(PaymentReceiveController(persistence))
 )
 
 

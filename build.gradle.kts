@@ -10,6 +10,9 @@ plugins {
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
+val koinVersion= "3.2.2"
+val koinKtor= "3.2.2"
+
 repositories {
     mavenCentral()
 }
@@ -21,6 +24,15 @@ dependencies {
     implementation("io.ktor", "ktor-server-netty", "2.0.3")
     implementation("ch.qos.logback", "logback-classic", "1.2.1")
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", "1.6.4")
+
+    // Koin Core features
+    implementation ("io.insert-koin:koin-core:$koinVersion")
+    // Koin Test features
+    testImplementation ("io.insert-koin:koin-test:$koinVersion")
+    // Koin for Ktor
+    implementation ("io.insert-koin:koin-ktor:$koinKtor")
+    // SLF4J Logger
+    implementation ("io.insert-koin:koin-logger-slf4j:$koinKtor")
 
 
     testImplementation(kotlin("test"))

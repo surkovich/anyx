@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ConcurrentSkipListMap
 
 
-object DummyMapBasedPaymentRepository: NewPaymentPersistence {
+class DummyMapBasedPaymentRepository: NewPaymentPersistence {
 
     private val payments: ConcurrentSkipListMap<String, ConcurrentLinkedQueue<Payment>> = ConcurrentSkipListMap()
     private val utcZone = ZoneOffset.UTC
