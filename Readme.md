@@ -1,5 +1,5 @@
 Simple project, try-out of GraphQL and ktor - completely new technologies for me.
 
-For this moment - only mutator added, no report generation, no tests, only dummy persistence added, no DI container yet.
+For this moment - only mutator added, no report generation, no tests, only dummy persistence added.
 
 

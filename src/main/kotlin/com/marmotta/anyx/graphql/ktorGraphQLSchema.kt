@@ -42,7 +42,6 @@ class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
 }
 
 
-
 private val queries = listOf(
     TopLevelObject(HelloQueryService()),
 )

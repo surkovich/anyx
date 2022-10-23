@@ -11,7 +11,7 @@ data class Payment (
     val initialPrice: BigDecimal,
     val finalPrice: BigDecimal,
     val paymentMethod: PaymentMethod,
-
+    val points: Int
 )
 
 sealed class MethodDependedDetails(

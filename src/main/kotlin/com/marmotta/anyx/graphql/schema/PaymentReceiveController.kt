@@ -38,7 +38,8 @@ class PaymentReceiveController(
             initialPrice = this.price,
             //TODO!!!
             finalPrice = BigDecimal.valueOf(0.95),
-            paymentMethod = this.paymentMethod
+            paymentMethod = this.paymentMethod,
+            points = 1
         )
 }
 
