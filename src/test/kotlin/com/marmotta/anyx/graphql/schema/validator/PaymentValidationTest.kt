@@ -121,7 +121,58 @@ internal class PaymentValidationTest{
         }
     }
 
+    @Test
+    fun `VISA, Mastercard and JCB should fail when no last 4 numbers provided`() {
+        listOf(
+            PaymentMethod.VISA, PaymentMethod.MASTERCARD, PaymentMethod.JCB
+        ).forEach {
+            val payment = PaymentRegistrationDTO(
+                customerId = 1L,
+                price = BigDecimal(100),
+                priceModifier = BigDecimal(1),
+                paymentMethod = it,
+                dateTime = OffsetDateTime.MIN,
+                additionalItem = AdditionalDetails()
+            )
+            PaymentValidation.of(payment) should beInstanceOf<PaymentValidationDetails.Errors>()
+        }
+    }
 
+    @Test
+    fun `Bank transfer should require bank name and account number`() {
+        listOf(
+            AdditionalDetails(bankAccount = null, bankName = null),
+            AdditionalDetails(bankAccount = 1, bankName = null),
+            AdditionalDetails(bankAccount = null, bankName = "Sumitomo"),
+        )
+        val payment = PaymentRegistrationDTO(
+            customerId = 1L,
+            price = BigDecimal(100),
+            priceModifier = BigDecimal(1),
+            paymentMethod = PaymentMethod.BANK_TRANSFER,
+            dateTime = OffsetDateTime.MIN,
+            additionalItem = AdditionalDetails()
+        )
+        PaymentValidation.of(payment) should beInstanceOf<PaymentValidationDetails.Errors>()
+    }
+
+    @Test
+    fun `cheque payment should require cheque number and bank name`(){
+        listOf(
+            AdditionalDetails(chequeNumber = null, bankName = null),
+            AdditionalDetails(chequeNumber = "1", bankName = null),
+            AdditionalDetails(chequeNumber = null, bankName = "Sumitomo"),
+        )
+        val payment = PaymentRegistrationDTO(
+            customerId = 1L,
+            price = BigDecimal(100),
+            priceModifier = BigDecimal(1),
+            paymentMethod = PaymentMethod.CHEQUE,
+            dateTime = OffsetDateTime.MIN,
+            additionalItem = AdditionalDetails()
+        )
+        PaymentValidation.of(payment) should beInstanceOf<PaymentValidationDetails.Errors>()
+    }
 
     private fun fullyFilledAdditionalDetails() =
         AdditionalDetails(
