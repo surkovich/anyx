@@ -18,6 +18,7 @@ package com.marmotta.anyx.graphql
 
 import com.expediagroup.graphql.generator.extensions.print
 import com.marmotta.anyx.graphql.repository.persistence.NewPaymentPersistence
+import com.marmotta.anyx.graphql.repository.persistence.ReportPersistence
 import io.ktor.http.ContentType
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -34,13 +35,16 @@ import org.koin.ktor.plugin.Koin
 import com.marmotta.anyx.graphql.repository.persistence.impl.DummyMapBasedPaymentRepository
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 fun Application.graphQLModule() {
     install(Routing)
 
     val appModule = module {
-        singleOf(::DummyMapBasedPaymentRepository){bind<NewPaymentPersistence>()}
+        single { DummyMapBasedPaymentRepository() }
+            .binds(arrayOf(NewPaymentPersistence::class, ReportPersistence::class))
+
     }
 
 

@@ -7,11 +7,11 @@ import com.expediagroup.graphql.generator.scalars.IDValueUnboxer
 import com.expediagroup.graphql.generator.toSchema
 import com.expediagroup.graphql.server.operations.Query
 import com.marmotta.anyx.graphql.repository.persistence.NewPaymentPersistence
+import com.marmotta.anyx.graphql.repository.persistence.ReportPersistence
 import com.marmotta.anyx.graphql.schema.*
 import graphql.GraphQL
 import graphql.scalars.ExtendedScalars.*
 import graphql.schema.GraphQLType
-import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.inject
 import java.math.BigDecimal
 import java.time.OffsetDateTime
@@ -42,14 +42,15 @@ class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
 }
 
 
+private val newPaymentPersistence: NewPaymentPersistence by inject(NewPaymentPersistence::class.java)
+private val reportPersistence: ReportPersistence by inject(ReportPersistence::class.java)
 private val queries = listOf(
-    TopLevelObject(HelloQueryService()),
+    TopLevelObject(ReportController(reportPersistence)),
 )
 
-private val persistence: NewPaymentPersistence by inject(NewPaymentPersistence::class.java)
 
 private val mutations = listOf(
-    TopLevelObject(PaymentReceiveController(persistence))
+    TopLevelObject(PaymentReceiveController(newPaymentPersistence))
 )
 
 

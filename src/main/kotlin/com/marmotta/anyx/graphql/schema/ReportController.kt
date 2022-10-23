@@ -10,10 +10,8 @@ class ReportController(private val persistence: ReportPersistence): Query {
     fun report(
         startDateTime: OffsetDateTime,
         endDateTime: OffsetDateTime
-    ) {
+    ) =
+        persistence.salesOurly(startDateTime, endDateTime)
 
-
-
-    }
 
 }
