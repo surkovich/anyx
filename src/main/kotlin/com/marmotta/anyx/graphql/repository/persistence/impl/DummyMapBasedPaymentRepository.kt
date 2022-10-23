@@ -2,7 +2,7 @@ package com.marmotta.anyx.graphql.repository.persistence.impl
 
 import com.marmotta.anyx.graphql.repository.Payment
 import com.marmotta.anyx.graphql.repository.persistence.NewPaymentPersistence
-import com.marmotta.anyx.graphql.repository.persistence.OurlyReportItem
+import com.marmotta.anyx.graphql.shared.model.OurlyReportItem
 import com.marmotta.anyx.graphql.repository.persistence.ReportPersistence
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -33,7 +33,6 @@ class DummyMapBasedPaymentRepository: NewPaymentPersistence, ReportPersistence {
 
         return payments.subMap(keyFrom, keyTo)
             .mapValues { entry ->
-                //TODO move report item to common api from persistence
                 OurlyReportItem(
                     dateTime = entry.value.first().dateTime.withMinute(0).withSecond(0).withHour(0),
                     sales = entry.value.sumOf { it.finalPrice },

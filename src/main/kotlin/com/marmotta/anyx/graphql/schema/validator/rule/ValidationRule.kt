@@ -18,8 +18,9 @@ abstract class ValidationRule {
 
     protected abstract fun checkAdditionalItems(payment: PaymentRegistrationDTO): String?
 
-    fun checkPriceModifier(payment: PaymentRegistrationDTO) : String? =
-        if (payment.priceModifier < priceModifierBounds.min) {
+    private fun checkPriceModifier(payment: PaymentRegistrationDTO) : String? =
+        if (payment.priceModifier < priceModifierBounds.min ||
+                payment.priceModifier > priceModifierBounds.max) {
             "price_modifier for ${payment.paymentMethod} should be within " +
                     "[${priceModifierBounds.min}, ${priceModifierBounds.max}]"
         } else null
