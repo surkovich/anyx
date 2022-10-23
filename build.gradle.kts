@@ -12,6 +12,8 @@ version = "1.0-SNAPSHOT"
 
 val koinVersion= "3.2.2"
 val koinKtor= "3.2.2"
+val kotestVersion = "5.5.1"
+val junitVersion = "5.9.0"
 
 repositories {
     mavenCentral()
@@ -35,7 +37,15 @@ dependencies {
     implementation ("io.insert-koin:koin-logger-slf4j:$koinKtor")
 
 
-    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+
+    testImplementation ("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation ("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation ("io.kotest:kotest-property:$kotestVersion")
+
+
 }
 
 tasks.test {

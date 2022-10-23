@@ -4,7 +4,7 @@ import com.marmotta.anyx.graphql.shared.model.Courier
 import com.marmotta.anyx.graphql.schema.models.PaymentRegistrationDTO
 
 internal class NoAdditionalItemsValidationRequired(
-    override val priceModifierBounds: ValidationRule.PriceModifierBounds
+    override val priceModifierBounds: PriceModifierBounds
 ) : ValidationRule() {
     override fun checkAdditionalItems(payment: PaymentRegistrationDTO): String? {
         return null

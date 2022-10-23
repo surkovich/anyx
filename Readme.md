@@ -4,6 +4,6 @@ Simple project, try-out of GraphQL, ktor and koin - completely new technologies 
 
 
 For this moment - no tests, only dummy persistence added, 
-point algorithms are not implemented, some cleanup needed.
+some cleanup needed.
 
 

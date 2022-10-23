@@ -33,14 +33,14 @@ data class PaymentRegistrationDTO(
 
 class AdditionalDetails(
     @GraphQLName("last_4")
-    val lastFourDigits: Int?,
+    val lastFourDigits: Int? = null,
     @GraphQLName("courier_service")
-    val courierService: Courier?,
+    val courierService: Courier? = null,
     @GraphQLName("bank_name")
-    val bankName: String?,
+    val bankName: String? = null,
     @GraphQLName("account_number")
-    val bankAccount: Long?,
+    val bankAccount: Long? = null,
     @GraphQLName("cheque_number")
-    val chequeNumber: String?
+    val chequeNumber: String? = null
 )
 
