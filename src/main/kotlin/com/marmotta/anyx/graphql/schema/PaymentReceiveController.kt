@@ -1,13 +1,12 @@
 package com.marmotta.anyx.graphql.schema
 
 import com.expediagroup.graphql.server.operations.Mutation
+import com.marmotta.anyx.graphql.calculation.PriceAndPointsCalculation
 import com.marmotta.anyx.graphql.repository.Payment
 import com.marmotta.anyx.graphql.repository.persistence.NewPaymentPersistence
 import com.marmotta.anyx.graphql.schema.models.PaymentRegistrationDTO
 import com.marmotta.anyx.graphql.schema.validator.PaymentValidation
 import com.marmotta.anyx.graphql.schema.validator.PaymentValidationDetails
-import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent
 import java.math.BigDecimal
 
 
@@ -15,31 +14,36 @@ class PaymentReceiveController(
     private val persistence: NewPaymentPersistence
 ): Mutation {
 
-
-    suspend fun registerPayment(payment: PaymentRegistrationDTO): PaymentRegistrationResult {
-        return when(val result = PaymentValidation.of(payment)) {
+    suspend fun registerPayment(payment: PaymentRegistrationDTO): PaymentRegistrationResult =
+        when(val result = PaymentValidation.of(payment)) {
             is PaymentValidationDetails.Valid -> {
-                persistence.add(payment.asPersistenceModel())
-                PaymentRegistrationResult.SuccessfullyRegistered(
-                    finalPrice = BigDecimal.valueOf(0.95),
-                    points = 1
-                )
+                payment.saveWithPoints(PriceAndPointsCalculation.of(
+                    paymentMethod = payment.paymentMethod,
+                    price = payment.price
+                ))
             }
             is PaymentValidationDetails.Errors -> PaymentRegistrationResult.ValidationFailed(
                 message = result.description
             )
         }
+
+    private suspend fun PaymentRegistrationDTO.saveWithPoints(points: Int): PaymentRegistrationResult.SuccessfullyRegistered {
+        val finalPrice = this.priceModifier * this.price
+        persistence.add(this.asPersistenceModel(finalPrice, points))
+        return PaymentRegistrationResult.SuccessfullyRegistered(
+            points = points,
+            finalPrice = finalPrice
+        )
     }
 
-    private fun PaymentRegistrationDTO.asPersistenceModel(): Payment =
+    private fun PaymentRegistrationDTO.asPersistenceModel(finalPrice: BigDecimal, points: Int): Payment =
         Payment(
             dateTime = this.dateTime,
             customerId = this.customerId,
             initialPrice = this.price,
-            //TODO!!!
-            finalPrice = BigDecimal.valueOf(0.95),
+            finalPrice = finalPrice,
             paymentMethod = this.paymentMethod,
-            points = 1
+            points = points
         )
 }
 

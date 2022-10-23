@@ -3,44 +3,50 @@ package com.marmotta.anyx.graphql.schema.validator.rule
 import com.marmotta.anyx.graphql.shared.model.Courier
 import com.marmotta.anyx.graphql.schema.models.PaymentRegistrationDTO
 
-internal object LastFourDigitsOfCardRequired: ValidationRule {
-    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
+internal class NoAdditionalItemsValidationRequired(
+    override val priceModifierBounds: ValidationRule.PriceModifierBounds
+) : ValidationRule() {
+    override fun checkAdditionalItems(payment: PaymentRegistrationDTO): String? {
+        return null
+    }
+}
+
+internal class LastFourDigitsOfCardRequired(override val priceModifierBounds: PriceModifierBounds) : ValidationRule() {
+
+    override fun checkAdditionalItems(payment: PaymentRegistrationDTO): String? {
         if (payment.additionalItem?.lastFourDigits == null)
-            return ValidationResult.Errors(
-                errors = "Last four digits of credit card number required"
-            )
+            return "Last four digits of credit card number required"
 
         val digitsLength = payment.additionalItem.lastFourDigits.toString().length
         if (digitsLength != 4) {
-            return ValidationResult.Errors(
-                errors = "Exactly four digits of card number required, but [$digitsLength] provided"
-            )
+            return "Exactly four digits of card number required, but [$digitsLength] provided"
+
         }
 
-        return ValidationResult.Valid
+        return null
     }
 }
 
-internal class CourierServiceShouldBeRestricted(private val couriers: Set<Courier>): ValidationRule {
-    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
+internal class CourierServiceShouldBeRestricted(
+    private val couriers: Set<Courier>,
+    override val priceModifierBounds: PriceModifierBounds
+) : ValidationRule() {
+    override fun checkAdditionalItems(payment: PaymentRegistrationDTO): String? {
         val courierService = payment.additionalItem?.courierService
-            ?: return ValidationResult.Errors(
-                errors = "Courier service is not provided. Available courier services are [$couriers]"
-            )
+            ?: return "Courier service is not provided. Available courier services are [$couriers]"
+
 
         if (!couriers.contains(courierService)) {
-            return ValidationResult.Errors(
-                errors = "Courier service should be one of [$couriers], but [$courierService] found"
-            )
+            return "Courier service should be one of [$couriers], but [$courierService] found"
         }
 
-        return ValidationResult.Valid
+        return null
     }
 
 }
 
-internal object BankNameAndAccountRequired: ValidationRule {
-    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
+internal class BankNameAndAccountRequired(override val priceModifierBounds: PriceModifierBounds) : ValidationRule() {
+    override fun checkAdditionalItems(payment: PaymentRegistrationDTO): String? {
         val emptyRequirements: List<String> = listOfNotNull(
             if (payment.additionalItem?.bankName == null) {
                 "Bank Name"
@@ -50,19 +56,17 @@ internal object BankNameAndAccountRequired: ValidationRule {
             } else null
         )
 
-        return if(emptyRequirements.isEmpty()) {
-            ValidationResult.Valid
+        return if (emptyRequirements.isEmpty()) {
+            null
         } else {
-            ValidationResult.Errors(
-                errors = "The field(s) [$emptyRequirements] should not be null"
-            )
+            "The field(s) [$emptyRequirements] should not be null"
         }
 
     }
 }
 
-object BankNameAndChequeRequired: ValidationRule {
-    override fun check(payment: PaymentRegistrationDTO): ValidationResult {
+internal class BankNameAndChequeRequired(override val priceModifierBounds: PriceModifierBounds) : ValidationRule() {
+    override fun checkAdditionalItems(payment: PaymentRegistrationDTO): String? {
         val emptyRequirements: List<String> = listOfNotNull(
             if (payment.additionalItem?.bankName == null) {
                 "Bank Name"
@@ -72,12 +76,10 @@ object BankNameAndChequeRequired: ValidationRule {
             } else null
         )
 
-        return if(emptyRequirements.isEmpty()) {
-            ValidationResult.Valid
+        return if (emptyRequirements.isEmpty()) {
+            null
         } else {
-            ValidationResult.Errors(
-                errors = "The field(s) [$emptyRequirements] should not be null"
-            )
+            "The field(s) [$emptyRequirements] should not be null"
         }
 
     }

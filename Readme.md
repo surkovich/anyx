@@ -1,8 +1,9 @@
 Test project for anyX job interview. 
 
-Simple project, try-out of GraphQL and ktor - completely new technologies for me.
+Simple project, try-out of GraphQL, ktor and koin - completely new technologies for me.
 
 
-For this moment - no tests, only dummy persistence added, some cleanup needed.
+For this moment - no tests, only dummy persistence added, 
+point algorithms are not implemented, some cleanup needed.
 
 

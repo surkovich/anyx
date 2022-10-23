@@ -1,6 +1,5 @@
 package com.marmotta.anyx.graphql.calculation.impl
 
-import com.marmotta.anyx.graphql.calculation.PriceAndPoints
 import com.marmotta.anyx.graphql.calculation.PriceAndPointsCalculator
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -11,10 +10,6 @@ internal class MultiplyingPriceAndPointsCalculator(
 
     private val pointsMultiplier: BigDecimal
 ): PriceAndPointsCalculator {
-    override fun calculate(initialPrice: BigDecimal, priceModifier: BigDecimal) =
-        PriceAndPoints(
-            finalPrice = initialPrice *  priceModifier,
-            points = (initialPrice * pointsMultiplier).setScale(0, RoundingMode.FLOOR).intValueExact()
-        )
-
+    override fun calculate(initialPrice: BigDecimal) =
+        (initialPrice * pointsMultiplier).setScale(0, RoundingMode.FLOOR).intValueExact()
 }
